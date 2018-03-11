@@ -14,9 +14,10 @@
     "build": "babel server -d dist --compilers js:babel-register --require babel-polyfill --copy-files"
   },
   "dependencies": {
-    "babel-runtime": "^6.26.0",
     "async": "^2.5.0",
+    "babel-runtime": "^6.26.0",
     "bcrypt": "^1.0.3",
+    "better-queue": "^3.8.6",
     "bluebird": "^3.5.1",
     "body-parser": "^1.17.2",
     "cfenv": "^1.0.4",
@@ -24,11 +25,13 @@
     "cross-env": "^5.0.5",
     "express": "^4.15.3",
     "helmet": "^3.9.0",
+    "jsonfile": "^4.0.0",
     "morgan": "^1.9.0",
     "promise": "^8.0.1",
     "twit": "^2.2.9",
     "uid": "0.0.2",
-    "watson-developer-cloud": "^2.42.0"
+    "watson-developer-cloud": "^2.42.0",
+    "write-json-file": "^2.3.0"
   },
   "devDependencies": {
     "babel-runtime": "^6.26.0",
