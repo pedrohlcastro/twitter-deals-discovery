@@ -11,7 +11,7 @@ import path from 'path';
 import helmet from 'helmet';
 import ApiRoutes from './Routes/ApiRoutes';
 
-import configEnv from '../config/configEnv';
+import configEnv from './config/configEnv';
 
 const app = express();
 
