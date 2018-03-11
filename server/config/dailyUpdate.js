@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 import async from 'async';
 import TwitterController from '../Controllers/TwitterController';
