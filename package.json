@@ -14,6 +14,7 @@
     "build": "babel server -d dist --compilers js:babel-register --require babel-polyfill --copy-files"
   },
   "dependencies": {
+    "babel-runtime": "^6.26.0",
     "async": "^2.5.0",
     "bcrypt": "^1.0.3",
     "bluebird": "^3.5.1",
