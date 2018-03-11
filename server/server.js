@@ -9,9 +9,10 @@ import morgan from 'morgan';
 import cors from 'cors';
 import path from 'path';
 import helmet from 'helmet';
-import ApiRoutes from './Routes/ApiRoutes';
 
+import ApiRoutes from './Routes/ApiRoutes';
 import configEnv from './config/configEnv';
+import dailyUpdate from './config/dailyUpdate';
 
 const app = express();
 
@@ -29,6 +30,8 @@ app.use(bodyParser.urlencoded({extended: false}));
 
 // Point static path to dist
 app.use(express.static(path.join(__dirname, '../client/dist/')));
+
+dailyUpdate();
 
 //API calls
 app.use('/api', ApiRoutes);

@@ -97,7 +97,7 @@ class WatsonController {
                     }
                     if (data.status == 'deleted'){
                         this.collectionId = null;
-                        console.log('WATSON Log: ' + options.collectionid +  ' collection Deleted');
+                        console.log('WATSON Log: ' + options.collection_id +  ' collection Deleted');
                         resolve();
                     }
                     else{
