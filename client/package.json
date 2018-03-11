@@ -4,6 +4,7 @@
   "license": "MIT",
   "scripts": {
     "ng": "ng",
+    "dev": "ng serve --no-aot --proxy-config angular.proxy.json",
     "start": "ng serve",
     "build": "ng build --prod",
     "test": "ng test",
@@ -13,20 +14,24 @@
   "private": true,
   "dependencies": {
     "@angular-devkit/core": "^0.4.5",
-    "@angular/animations": "^5.0.0",
+    "@angular/animations": "^5.2.8",
+    "@angular/cdk": "^5.2.4",
     "@angular/common": "^5.0.0",
     "@angular/compiler": "^5.0.0",
     "@angular/core": "^5.0.0",
     "@angular/forms": "^5.0.0",
     "@angular/http": "^5.0.0",
+    "@angular/material": "^5.2.4",
     "@angular/platform-browser": "^5.0.0",
     "@angular/platform-browser-dynamic": "^5.0.0",
     "@angular/router": "^5.0.0",
     "core-js": "^2.4.1",
+    "hammerjs": "^2.0.8",
     "rxjs": "^5.5.2",
     "zone.js": "^0.8.14"
   },
   "devDependencies": {
+    "@angular-devkit/core": "^0.4.5",
     "@angular/cli": "1.6.1",
     "@angular/compiler-cli": "^5.0.0",
     "@angular/language-service": "^5.0.0",

@@ -1,1 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
+@import '~@angular/material/prebuilt-themes/purple-green.css';
+
+.mat-select:focus:not(.mat-select-disabled).mat-primary .mat-select-arrow,
+.mat-select:focus:not(.mat-select-disabled).mat-primary .mat-select-trigger .mat-input-infix .mat-form-field-infix {
+  color: white !important;
+}
+
+.mat-select-arrow,
+.mat-select-disabled .mat-select-value,
+.mat-select-trigger .mat-input-wrapper .mat-form-field-wrapper .mat-input-subscript-wrapper .mat-form-field-subscript-wrapper{
+  color:white !important;
+}
