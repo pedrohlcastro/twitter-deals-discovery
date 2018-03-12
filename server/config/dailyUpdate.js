@@ -42,15 +42,12 @@ const dailyUpdate = (timeout=ONE_DAY) => {
             }
         });
     }
-    // Dayly updates
-    setTimeout(() => {
-        WatsonController.getCollection()
-            .then(() => {
-                WatsonController.deleteCollection()
-                    .then(createCollection)
-                    .catch(createCollection);
-            });
-    }, timeout);
+    WatsonController.getCollection()
+        .then(() => {
+            WatsonController.deleteCollection()
+                .then(createCollection)
+                .catch(createCollection);
+        });
 }
 
 export default dailyUpdate;

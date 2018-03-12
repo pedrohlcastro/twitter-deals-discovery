@@ -1,5 +1,5 @@
 <section class="container-fluid wrapper"></section>
-<div class="center">
+<div class="center" *ngIf="!results">
   <div class="row">
     <div class="col-xl-6">
       <h2>Encontre as melhores promoções no Twitter,</h2>
@@ -8,16 +8,30 @@
       <h3><a href="https://twitter.com/hardmob_promo">@hardmob_promo</a>, <a href="https://twitter.com/promobitoficial">@PromobitOficial</a>, <a href="https://twitter.com/pelandobr">@pelandobr</a>, e <a href="https://twitter.com/PromoForum">@PromoForum</a></h3>
     </div>
     <div class="col-xl-6 form-section">
-      <mat-form-field>
-        <mat-select placeholder="Tipo de Produto" [(value)]="selected">
-          <mat-option>None</mat-option>
-          <mat-option value="option1">Option 1</mat-option>
-          <mat-option value="option2">Option 2</mat-option>
-          <mat-option value="option3">Option 3</mat-option>
-        </mat-select>
-      </mat-form-field>
-      <button mat-raised-button class="send-button"> Buscar </button>
+      <h4>Clique em buscar e encontre as melhores promoções de Notebook...</h4>
+      <button mat-raised-button class="send-button" (click)="searchResults()"> Buscar </button>
     </div>
   </div>
 </div>
+<div class="container results" *ngIf="results">
+  <button mat-icon-button class="back-button" (click)="results=false"><i class="material-icons">arrow_back</i></button>
+  <div class="row">
+    <div class="col-xl-6" *ngFor="let d of data; let i = index">
+      <mat-card class="card">
+        <div class="blue-div" mat-card-image>
+          <p>{{d.text}}</p>
+        </div>
+        <mat-card-content>
+            <p class="itens" *ngFor="let item of d.enriched_text.entities">
+              {{item.type}}: {{item.text}}
+            </p>
+          </mat-card-content>
+        <mat-card-actions>
+          <a href="{{d.link}}"><img src="/assets/twitter-icn.png"></a>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>
+
 

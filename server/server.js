@@ -31,7 +31,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 // Point static path to dist
 app.use(express.static(path.join(__dirname, '../client/dist/')));
 
-dailyUpdate();
+// dailyUpdate();
 
 //API calls
 app.use('/api', ApiRoutes);

@@ -16,7 +16,7 @@ class TwitterController{
 
     getTwetts(){
         return new Promise((resolve, reject) => {
-            this.twitterModule.get('search/tweets', { q: 'Notebook promoção since:2018-03-05', count: 100 }, (err, data, response) => {
+            this.twitterModule.get('search/tweets', { q: 'Notebook promoção since:2018-03-05', count: 200 }, (err, data, response) => {
                 if(err) {
                     reject({status: 500, msg: 'Twitter API Error', err: err});
                 } else {
@@ -37,7 +37,7 @@ class TwitterController{
 
     getTimeline(twitterUser){
         return new Promise((resolve, reject) => {
-            this.twitterModule.get('statuses/user_timeline', { screen_name: twitterUser , count: 100 }, (err, data, response) => {
+            this.twitterModule.get('statuses/user_timeline', { screen_name: twitterUser , count: 200 }, (err, data, response) => {
                 if(err) {
                     reject({status: 500, msg: 'Twitter API Error', err: err});
                 } else {

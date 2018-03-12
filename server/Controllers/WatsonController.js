@@ -7,6 +7,8 @@ import async from 'async';
 import {exec} from 'child_process';
 import Queue from 'better-queue';
 import fs from 'fs';
+import archiver from 'archiver';
+import genUid from 'uid';
 
 class WatsonController {
     constructor() {
@@ -40,17 +42,18 @@ class WatsonController {
      * Get CollectionId : String
      */
     getCollection() {
-        if (this.collectionId){
-            return;
-        }
-        else { //create a collection 
-            let options = {
-                environment_id: this.environmentId,
-                name: 'New Collection',
-                languagecode: 'pt-br',
-                configuration_id: this.configurationId
-            };
-            return new Promise(async (resolve, reject) => {
+        return new Promise(async (resolve, reject) => {
+            if (this.collectionId){
+                resolve();
+            }
+            else { //create a collection 
+                let options = {
+                    environment_id: this.environmentId,
+                    name: 'New Collection',
+                    languagecode: 'pt-br',
+                    configuration_id: this.configurationId
+                };
+                
                 this.discovery.getCollections({environment_id: this.environmentId})
                     .then((data) => {
                         console.log(data);
@@ -74,9 +77,9 @@ class WatsonController {
                     .catch((err) => {
                         console.log('WATSON [GetCollection] Error: ' + err);
                         reject(err);
-                    })
-            }); 
-        }
+                    });
+            }
+        });
     }
 
     /**
@@ -137,13 +140,14 @@ class WatsonController {
                             .then(cb())
                             .catch((err) => cb(err));
                         
-                    }, { afterProcessDelay: 100});
+                    }, { afterProcessDelay: 100 });
 
                     // Upload all files to Discovery
                     async.forEach(docs, (doc, cb) => {
-                        jsonfile(`/tmp/${doc.link}.json`, doc)
+                        let numberUid = genUid(10);
+                        jsonfile(`/tmp/entry/${numberUid}.json`, doc)
                             .then(() => {
-                                uploaderQueue.push(`/tmp/${doc.link}.json`);
+                                uploaderQueue.push(`/tmp/entry/${numberUid}.json`);
                                 cb();
                             })
                             .catch((err) => {
@@ -173,25 +177,32 @@ class WatsonController {
      * Search based on a raw text
      * @param {string} entityType 
      */
-    searchText(productType='MARCA', countMax=2000) {
+    searchText(countMax=2000) {
         return new Promise(async (resolve, reject) => {
-            // const params = {
-            //     environment_id: this.environmentId,
-            //     collection_id: this.collectionId,
-            //     query_string: `enriched_text.entities.type::"MARCA"`,
-            //     count: countMax,
-            //     filter: `enriched_text.entities.type::"MARCA"`
-            // }
-
-            // this.discovery.query(params)
-            //     .then((data) => {
-            //         let result = JSON.stringify(data);
-            //         result = JSON.parse(result);   
-            //         resolve(result);
-            //     })
-            //     .catch((err) => {
-            //         reject(err);
-            //     });
+            this.getCollection()
+                .then(() => {
+                    console.log('TO DENRTO');
+                    const params = {
+                        environment_id: this.environmentId,
+                        collection_id: this.collectionId,
+                        natural_language_query: 'notebook',
+                        count: countMax,
+                    }
+        
+                    this.discovery.query(params)
+                        .then((data) => {
+                            console.log(data);
+                            let result = JSON.stringify(data);
+                            result = JSON.parse(result);   
+                            resolve(result);
+                        })
+                        .catch((err) => {
+                            reject(err);
+                        });
+                })
+                .catch((err) => {
+                    reject(err);
+                });
         });
     }
 }
