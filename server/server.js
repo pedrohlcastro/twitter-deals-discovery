@@ -9,13 +9,16 @@ import morgan from 'morgan';
 import cors from 'cors';
 import path from 'path';
 import helmet from 'helmet';
+// import path from 'path';
 
 import ApiRoutes from './Routes/ApiRoutes';
 import configEnv from './config/configEnv';
 import dailyUpdate from './config/dailyUpdate';
+import dotenv from 'dotenv';
 
 const app = express();
 
+dotenv.config();
 app.use(morgan(ENV));
 app.use(cors());
 

@@ -12,36 +12,47 @@ import genUid from 'uid';
 
 class WatsonController {
     constructor() {
-        this.username = '212a41ed-8119-492a-acd4-031a79660662';
-        this.password = 'Z3QpSxT3n5b8';
-        this.environmentId = '9b9316e2-adf8-4718-bbd1-5ca0752d0f77';
-        this.configurationId = '860098b0-5b72-4e87-bd8a-1f6f977d9760';
-        this.discovery = new DiscoveryV1({
-            username: this.username,
-            password: this.password,
-            version_date: '2017-11-07'
-        });
-
+        this.username;
+        this.password;
+        this.environmentId;
+        this.configurationId;
+        this.discovery;
         this.collectionId;
 
+        
+    }
 
-        //promisify sdk
-        this.discovery.getEnvironments = Promise.promisify(this.discovery.getEnvironments);
-        this.discovery.getCollection = Promise.promisify(this.discovery.getCollection);
-        this.discovery.deleteCollection = Promise.promisify(this.discovery.deleteCollection);
-        this.discovery.createEnvironment = Promise.promisify(this.discovery.createEnvironment);
-        this.discovery.getConfigurations = Promise.promisify(this.discovery.getConfigurations);
-        this.discovery.createCollection = Promise.promisify(this.discovery.createCollection);
-        this.discovery.addDocument = Promise.promisify(this.discovery.addDocument);
-        this.discovery.query = Promise.promisify(this.discovery.query);
-        this.discovery.getCollections = Promise.promisify(this.discovery.getCollections);
-        this.execPromise = Promise.promisify(exec);
+    init(){
+        return new Promise((resolve, reject) => {
+            this.username = process.env.WATSON_DISCOVERY_USERNAME;
+            this.password = process.env.WATSON_DISCOVERY_PASSWORD;
+            this.environmentId = process.env.WATSON_DISCOVERY_ENVID;
+            this.configurationId = process.env.WATSON_DISCOVERY_CONFIGID;
+            this.discovery = new DiscoveryV1({
+                username: this.username,
+                password: this.password,
+                version_date: '2017-11-07'
+            });
+            //promisify sdk
+            this.discovery.getEnvironments = Promise.promisify(this.discovery.getEnvironments);
+            this.discovery.getCollection = Promise.promisify(this.discovery.getCollection);
+            this.discovery.deleteCollection = Promise.promisify(this.discovery.deleteCollection);
+            this.discovery.createEnvironment = Promise.promisify(this.discovery.createEnvironment);
+            this.discovery.getConfigurations = Promise.promisify(this.discovery.getConfigurations);
+            this.discovery.createCollection = Promise.promisify(this.discovery.createCollection);
+            this.discovery.addDocument = Promise.promisify(this.discovery.addDocument);
+            this.discovery.query = Promise.promisify(this.discovery.query);
+            this.discovery.getCollections = Promise.promisify(this.discovery.getCollections);
+            this.execPromise = Promise.promisify(exec);
+            resolve();
+        });
     }
 
     /**
      * Get CollectionId : String
      */
-    getCollection() {
+    async getCollection() {
+        await this.init();
         return new Promise(async (resolve, reject) => {
             if (this.collectionId){
                 resolve();
@@ -85,7 +96,8 @@ class WatsonController {
     /**
      * Delete current collection
      */
-    deleteCollection(bodyCollectionId) {
+    async deleteCollection(bodyCollectionId) {
+        await this.init();
         let idToBeDeleted = this.collectionId || bodyCollectionId;
         return new Promise((resolve, reject) => {
             if(idToBeDeleted && this.environmentId){
@@ -115,7 +127,8 @@ class WatsonController {
         });
     }
 
-    _curlAddDocument(filePath) {
+    async _curlAddDocument(filePath) {
+        await this.init();
         return new Promise((resolve, reject) => {
             let curlCmd = `curl -X POST -u "${this.username}":"${this.password}" -F file=@${filePath} `
             let execString = `${curlCmd} "https://gateway.watsonplatform.net/discovery/api/v1/environments/${this.environmentId}/collections/${this.collectionId}/documents?version=2017-11-07"`;
@@ -129,7 +142,8 @@ class WatsonController {
         });
     }
 
-    uploadFiles(docs) {
+    async uploadFiles(docs) {
+        await this.init();
         return new Promise((resolve, reject) => {
             this.getCollection()
                 .then(async () => {
@@ -177,7 +191,8 @@ class WatsonController {
      * Search based on a raw text
      * @param {string} entityType 
      */
-    searchText(countMax=2000) {
+    async searchText(countMax=2000) {
+        await this.init();
         return new Promise(async (resolve, reject) => {
             this.getCollection()
                 .then(() => {
